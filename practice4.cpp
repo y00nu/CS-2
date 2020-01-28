@@ -35,6 +35,10 @@ class BankAccount{
 void BankAccount::deposit(int dollar, int coin){
     dollars += dollar;
     coins += coin;
+    if (coins >= 100){
+        dollars ++;
+        coins -= 100;
+    }
 }
 
 void BankAccount::withdraw(int dollar, int coin){
