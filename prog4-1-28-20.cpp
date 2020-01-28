@@ -26,7 +26,7 @@ class Point{
             coord2 = y;
         }
         void print(){
-            cout << '(' << coord1 << ", " << coord2 << ')' << endl;
+            cout << '(' << coord1 << ", " << coord2 << ") " << "number of points : " << nbOfPoints << endl;
         }
         float distanceTo(Point p){
             return sqrt(pow(p.coord1-coord1,2)+pow(p.coord2 - coord2, 2));
@@ -64,12 +64,14 @@ float Point::slope(Point p){
 
 int main(){
     Point p1;
-    Point p2(10);
-    Point p3(20,20);
-
     p1.print();
+
+    Point p2(10);
     p2.print();
+
+    Point p3(20,20);
     p3.print();
+
 
     return 0;
 }
