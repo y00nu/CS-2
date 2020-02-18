@@ -1,6 +1,18 @@
-// Feb 11, 2020
+// Feb 11, 2020 Dynamic Array
 /*
   Dynamic Arrays
+  동적 배열이라는게 초기에는 디폴트값으로 배열 설정하고
+  공간 부족할때마다 공간을 늘린 새로운 메모리에 모든걸 옮기고 기존 메모리 삭제하는거임.
+  기존메모리공간도 delete []로 지우고.
+*/
+/*
+    Explicit Constructor 관련해서
+
+    DyanmicArray(int n = 10){} 이거 자체가 디폴트 생성자를 가지고 있는거임 (이렇게 가지고 있는거는 따로 안 써줘도됨)
+    DynamicArray(int n){} 만약 이렇게 한다면
+    DyanmicArray(){} 이렇게 디폴트 생성자를 써줘야됨. 그래야 나중에 DynamicArray obj1 = arr[3]; 이렇게 할당할때 문제가 안생긴다고함
+
+    동일한 객체의 인스턴스는 private value 접근가능.
 */
 #include <iostream>
 #include <cstdlib>
@@ -34,13 +46,13 @@ class DynamicArray{
                 for (int i = 0; i < nbOfElements; i++){
                     *(newStorage+i) = *(storage+i);
                 }
-                delete [] storage; // 메모리 초기화
+                delete [] storage; // memory delete
                 storage = newStorage;
             }
 			*(storage+nbOfElements) = x;
             nbOfElements++;
 		}
-        
+
 		void removeElement(int x);  
 
         DynamicArray merge(DynamicArray obj){
@@ -57,7 +69,7 @@ class DynamicArray{
         }
 };
 
-// 찾은위치 다음꺼부터 왼쪽으로 옮기는거임 그냥 덮어쓰기 개념
+// move all element to the left after the element I wanted to delete.
 void DynamicArray::removeElement(int x){
     for(int i = 0; i < nbOfElements; i++){
         if(x == storage[i]){
