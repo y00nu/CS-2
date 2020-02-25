@@ -1,4 +1,5 @@
-// Feb 13, Feb 18, Feb 20 Linked List
+// Feb 13
+// Linked List
 /*
     저번 dynamic array는 사이즈가 다 찰때마다 옮겨야되서 비효율적이었다.
     Linked List로 조금더 효율적으로 구현.
@@ -152,43 +153,63 @@ class List{
                 cout << (*temp).getElement() << endl;
                 temp = (*temp).getNext();
             }
-            cout << "************" << endl;
+            cout << endl;
 		}
 
 };
 
 class MultiList{
-    private:
-        List** hook;
-        int size;
-        int nbOfLists;
-    public:  
-        int getSize(){ return size; }
-        void setSize(int x){ size = x; }
-        int getNbOfLists(){ return nbOfLists; }
-        void setNbOfLists(int x){ nbOfLists = x;}
-        List** getHook(){return hook;}
-        void setHook(List** p){hook = p;}
-        MultiList(int x = 2){
-            size = 0;
-            nbOfLists = x;
-            hook = new List*[nbOfLists]; // nbOfLists 만큼의 list를 할당할 메모리를 만들겠다라는 의미
-            
-        }
-
+	private:
+		List** hook;
+		int size;
+		int nbOfLists;	
+	public:
+		int getSize(){return size;}
+		void setSize(int x){size=x;}
+		int getNbOfLists(){return nbOfLists;}
+		void setNbOfLists(int x){nbOfLists=x;}
+		List** getHook(){return hook;}
+		void setHook(List** p){hook=p;}
+		MultiList(int x = 2){
+			size = 0;
+			nbOfLists = x;
+			hook = new List *[nbOfLists];
+			for (int i = 0; i < nbOfLists; i++){
+				hook[i] = new List;
+			}
+		}
         void addElement(int x){
+			int range=500/nbOfLists;
+			//cout<<"Value: "<<x
+			hook[x/range]->addLast(x);
+			//(*hook[x/(500/nbOfLists)]).addLast(x);
+			size++;
+		}
 
-        }
+		void removeElement(int x){
+			hook[x / (500 / nbOfLists)]->remove(x);
+			size--;
+		}
 
-        void removeElement(int x){
+		void removeAllLasts(){
+			for(int i = 0; i < nbOfLists; i++){
+				if(hook[i]->getSize() > 0){
+					hook[i] -> removeLast();
+					size--;
+				}
+			}
+		}
 
-        }
-
-        void print(){
-
-        }
+		void print(){
+			for (int i=0; i<nbOfLists; i++){
+				cout<<"Element in list "<<i+1<<endl;
+				(*hook[i]).print();
+			}
+		}
 };
+
 int main(){
+
 	List obj1;
     // Add 5 nodes to node list
 	for (int i = 5; i>=1; i--){
@@ -222,14 +243,14 @@ int main(){
     obj1.remove(4);
     obj1.print();
 
-
-    MultiList obj2(4);
+    MultiList obj2(5);
     for (int i = 0; i < 20; i++)
     {
         obj2.addElement(rand()%501);
     }
-
+    
     obj2.print();
+
 	return 0;
 }
 
