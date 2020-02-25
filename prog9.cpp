@@ -12,9 +12,9 @@ class DNode{
         int element;
     
     public:
-        DNode(){
-            prev = NULL;
-            next = NULL;
+        DNode(DNode* x = NULL, DNode* y = NULL){
+            next = x;
+            prev = y;
             element = 0;
         }
         void setElement(int x){
@@ -40,54 +40,74 @@ class DNode{
 class CircularList{
     private:
         DNode* front;
-        DNode* rear;
+        DNode* last;
         int size;
 
     public:
         CircularList(){
             size = 0;
             front = NULL;
-            rear = front;
+            last = front;
         }
 
         void addFront(int x){
-            DNode* target = front;
-            DNode* newNode = new DNode;
-
-            newNode->setElement(x);
-            newNode->setNext(target);
-            front = newNode;
-            
-            target->setPrev(newNode);
-            rear->setNext(newNode);
-            
-            size++;
+            if(size == 0){
+                DNode* newNode = new DNode;
+                newNode->setElement(x);
+                front = newNode;
+                last = newNode;
+                size++;
+            }
+            else{
+                DNode* prevFront = front;
+                DNode* newNode = new DNode(prevFront, last);
+                newNode->setElement(x);
+                front = newNode;
+                prevFront->setPrev(newNode);
+                last->setNext(front);
+                size++;
+            }
         }
         void addLast(int x){
 
         }
         void print(){
             DNode* currentNode = front;
+            cout << "Print forward  : ";
             for (int i = 0; i < size; i++)
             {
-                cout << (*currentNode).getElement() << endl;
+                cout << (*currentNode).getElement() << "\t";
                 currentNode = currentNode->getNext();
             }
             cout << endl;
         }
+        void printReverse(){
+            DNode* currentNode = last;
+            cout << "Print backward : ";
+            for (int i = 0; i < size; i++)
+            {
+                cout << (*currentNode).getElement() << "\t";
+                currentNode = currentNode->getPrev();
+            }
+            cout << endl;
+        }
         void remove(int x){
-            
+            // DNode* currentNode;
+            // for(int i = 0; i < size; i++){
+                
+            // }
         }
 };
 
 int main(){
     CircularList list;
 
-    list.addFront(9);
+    for(int i = 0; i<10; i++){
+        list.addFront((1 + rand() % 100));
+    }
+
     list.print();
-    list.addFront(10);
-    list.addFront(20);
-    list.print();
+    list.printReverse();
 
     return 0;
 }
