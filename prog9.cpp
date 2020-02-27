@@ -4,7 +4,6 @@
 #include <cstdlib>
 
 using namespace std;
-
 class DNode{
     private:
         DNode* prev;
@@ -161,6 +160,7 @@ class CircularList{
                 nextNode->setPrev(prevNode);
                 
                 delete temp;
+                size--;
             }
         }
 };
