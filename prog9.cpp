@@ -56,35 +56,30 @@ class CircularList{
                 (*newNode).setElement(x);
                 front = newNode;
                 last = newNode;
-                size++;
+                (*newNode).setNext(newNode);
+                (*newNode).setPrev(newNode);
             }
             else{
-                DNode* prevFront = front;
                 // DNode(next, prev)
-                DNode* newNode = new DNode(prevFront, last);
+                DNode* newNode = new DNode(front, last);
                 (*newNode).setElement(x);
-                front = newNode;
-                (*prevFront).setPrev(newNode);
+                (*front).setPrev(newNode);
                 (*last).setNext(front);
-                size++;
+                front = newNode;
             }
+            size++;
         }
 
         void addLast(int x){
             // In case there's no node in the list
             if(size == 0){
-                DNode* newNode = new DNode;
-                (*newNode).setElement(x);
-                front = newNode;
-                last = newNode;
-                size++;
+                addFront(x);
             }
             else{
-                DNode* lastNode = last;
-                DNode* newNode = new DNode;
+                DNode* newNode = new DNode(front,last);
                 (*newNode).setElement(x);
-                (*lastNode).setNext(newNode);
-                (*newNode).setPrev(lastNode);
+                (*last).setNext(newNode);
+                (*newNode).setPrev(last);
                 (*newNode).setNext(front);
                 (*front).setPrev(newNode);
                 last = newNode;
@@ -113,54 +108,60 @@ class CircularList{
         }
 
         void remove(int x){
-            DNode* temp = front;
-            // for identifying the case
-            int c = 0;
-            for (int i = 0; i < size; i++)
-            {
-                if((*temp).getElement() == x){
-                    c = i + 1;
-                    break;
+            if (size > 0){
+                DNode* temp = front;
+                // for identifying the case
+                int c = 0;
+                for (int i = 0; i < size; i++)
+                {
+                    if((*temp).getElement() == x){
+                        c = i + 1;
+                        break;
+                    }
+                    temp = (*temp).getNext();
                 }
-                temp = (*temp).getNext();
-            }
 
-            if(c == 0){
-                cout << x << " is not in the list" << endl;
-            }
-            // case 1 : if x was the first node ( c == 0 )
-            else if (c == 1) 
-            {
-                DNode* nextNode;
-                nextNode = (*front).getNext();
-                last->setNext(nextNode);
-                nextNode->setPrev(last);
-                delete front;
-                front = nextNode;
-                size--;
-            }
-            // case 2 : if x was the last node ( c == size )
-            else if(c == size){
-                DNode* prevNode;
-                prevNode = last->getPrev();
-                prevNode->setNext(front);
-                front->setPrev(prevNode);
-                delete last;
-                last = prevNode;
-                size--;
-            }
-            // case 3 : located in the middle
-            else{
-                DNode* prevNode;
-                DNode* nextNode;
-                prevNode = (*temp).getPrev();
-                nextNode = (*temp).getNext();
+                if(c == 0){
+                    cout << x << " is not in the list" << endl;
+                }
+                else if(c == 1 && size == 1){
+                    front = last = NULL;
+                    delete temp;
+                }
+                // case 1 : if x was the first node
+                else if (c == 1) 
+                {
+                    DNode* nextNode;
+                    nextNode = (*front).getNext();
+                    last->setNext(nextNode);
+                    nextNode->setPrev(last);
+                    delete front;
+                    front = nextNode;
+                    size--;
+                }
+                // case 2 : if x was the last node
+                else if(c == size){
+                    DNode* prevNode;
+                    prevNode = last->getPrev();
+                    prevNode->setNext(front);
+                    front->setPrev(prevNode);
+                    delete last;
+                    last = prevNode;
+                    size--;
+                }
+                // case 3 : located in the middle
+                else{
+                    DNode* prevNode;
+                    DNode* nextNode;
+                    prevNode = (*temp).getPrev();
+                    nextNode = (*temp).getNext();
 
-                prevNode->setNext(nextNode);
-                nextNode->setPrev(prevNode);
-                
-                delete temp;
-                size--;
+                    prevNode->setNext(nextNode);
+                    nextNode->setPrev(prevNode);
+                    
+                    delete temp;
+                    size--;
+                }
             }
         }
 };
