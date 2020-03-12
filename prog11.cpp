@@ -50,11 +50,28 @@ class BSTree{
 	private:
 		TNode* root;
 		int nbOfNode;
-		void prePrint(TNode* ptr){
+		// print root -> left -> right
+		void prePrint(TNode* ptr){ 
+			if(ptr!=NULL){
+				cout << ptr->getStorage() << endl;
+				prePrint(ptr->getLeft());
+				prePrint(ptr->getRight());
+			}
+		}
+		// print left - > root -> right
+		void inPrint(TNode* ptr){
+			if(ptr!=NULL){
+				inPrint(ptr->getLeft());
+				cout << ptr->getStorage() << endl;
+				inPrint(ptr->getRight());
+			}
+		}
+		// print left -> right -> root
+		void postPrint(TNode* ptr){ 
 			if(ptr!=NULL){
 				prePrint(ptr->getLeft());
-				cout << ptr->getStorage() << endl;
 				prePrint(ptr->getRight());
+				cout << ptr->getStorage() << endl;
 			}
 		}
 	public:
@@ -109,6 +126,10 @@ class BSTree{
 		// TNode* search(int x){}
 		void print(){
 			prePrint(root);
+			cout << endl;
+			inPrint(root);
+			cout << endl;
+			postPrint(root);
 		}
 };
 
